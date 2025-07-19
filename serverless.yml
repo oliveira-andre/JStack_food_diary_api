@@ -61,3 +61,10 @@ functions:
       - httpApi:
           path: /meals/{mealId}
           method: get
+
+resources:
+  Resources:
+    UploadsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: foodiary-for-uploads
