@@ -19,7 +19,7 @@ export const usersTable = pgTable('users', {
 });
 
 
-export const mealStatus = pgEnum('meal_status', ['uploading', 'queued', 'processing', 'success', 'failed']);
+export const mealStatus = pgEnum('meal_status', ['uploading', 'processing', 'success', 'failed']);
 export const mealInputType = pgEnum('meal_input_type', ['audio', 'picture']);
 
 export const mealsTable = pgTable('meals', {
