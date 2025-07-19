@@ -12,6 +12,15 @@ provider:
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
     JWT_SECRET: ${env:JWT_SECRET}
+    BUCKET_NAME: !Ref UploadsBucket
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+          #Resource: !GetAtt UploadsBucket.Arn /*
+          Resource: !Sub '${UploadsBucket.Arn}/*'
 
 plugins:
   - serverless-offline
