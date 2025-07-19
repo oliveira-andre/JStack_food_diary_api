@@ -1,4 +1,4 @@
-import { pgTable, uuid, date, integer, varchar } from 'drizzle-orm/pg-core';
+import { date, integer, pgTable, uuid, varchar } from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users', {
   id: uuid().primaryKey().defaultRandom(),
@@ -11,8 +11,9 @@ export const usersTable = pgTable('users', {
   height: integer().notNull(),
   weight: integer().notNull(),
   activityLevel: integer('activity_level').notNull(),
+  // Goals
   calories: integer().notNull(),
-  proteines: integer().notNull(),
+  proteins: integer().notNull(),
   carbohydrates: integer().notNull(),
   fats: integer().notNull(),
 });

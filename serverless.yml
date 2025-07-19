@@ -8,6 +8,8 @@ provider:
   region: us-east-1
   runtime: nodejs20.x
   architecture: arm64
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
 
 plugins:
   - serverless-offline
