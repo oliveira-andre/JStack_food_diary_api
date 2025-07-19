@@ -13,6 +13,7 @@ provider:
     DATABASE_URL: ${env:DATABASE_URL}
     JWT_SECRET: ${env:JWT_SECRET}
     BUCKET_NAME: !Ref UploadsBucket
+    MEALS_QUEUE_URL: !Ref MealsQueue
   iam:
     role:
       statements:
@@ -21,6 +22,10 @@ provider:
             - s3:PutObject
           #Resource: !GetAtt UploadsBucket.Arn /*
           Resource: !Sub '${UploadsBucket.Arn}/*'
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+          Resource: !GetAtt MealsQueue.Arn
 
 plugins:
   - serverless-offline
