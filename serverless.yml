@@ -1,0 +1,32 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: codeline
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: JStack-food-diary-api
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs20.x
+  architecture: arm64
+
+package:
+  individually: true
+
+build:
+  esbuild:
+    minify: true
+    sourcemap: false
+
+functions:
+  signin:
+    handler: src/signin.handler
+    events:
+      - httpApi:
+          path: /signin
+          method: post
+  signup:
+    handler: src/signup.handler
+    events:
+      - httpApi:
+          path: /signup
+          method: post
