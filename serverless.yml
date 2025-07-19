@@ -8,8 +8,10 @@ provider:
   region: us-east-1
   runtime: nodejs20.x
   architecture: arm64
+  timeout: 10
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
+    JWT_SECRET: ${env:JWT_SECRET}
 
 plugins:
   - serverless-offline
@@ -35,3 +37,9 @@ functions:
       - httpApi:
           path: /signup
           method: post
+  me:
+    handler: src/functions/me.handler
+    events:
+      - httpApi:
+          path: /me
+          method: get

@@ -6,6 +6,8 @@ import { HttpRequest, HttpResponse } from '../types/Http';
 import { created, badRequest, conflict } from '../utils/http';
 import { db } from '../db/';
 import { usersTable } from '../db/schema';
+import { signAccessTokenFor } from '../lib/jwt';
+import { calculateGoals } from '../lib/calculateGoals';
 
 const schema = z.object({
   goal: z.enum(['lose', 'maintain', 'gain']),
@@ -42,6 +44,15 @@ export class SignUpController {
 
     const { account, ...rest } = data;
 
+    const goals = calculateGoals({
+      activityLevel: rest.activityLevel,
+      birthDate: new Date(rest.birthDate),
+      gender: rest.gender,
+      goal: rest.goal,
+      height: rest.height,
+      weight: rest.weight,
+    });
+
     const hashedPassword = await hash(account.password, 12);
 
     const [user] = await db
@@ -49,15 +60,15 @@ export class SignUpController {
       .values({
         ...account,
         ...rest,
+        ...goals,
         password: hashedPassword,
-        calories: 0,
-        carbohydrates: 0,
-        fats: 0,
-        proteins: 0,
-      }).returning({ id: usersTable.id });
+      })
+      .returning({
+        id: usersTable.id,
+      });
 
-    return created({
-      userId: user.id
-    });
+    const accessToken = signAccessTokenFor(user.id);
+
+    return created({ accessToken });
   }
 }
