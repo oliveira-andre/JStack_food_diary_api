@@ -43,3 +43,21 @@ functions:
       - httpApi:
           path: /me
           method: get
+  createMeal:
+    handler: src/functions/createMeal.handler
+    events:
+      - httpApi:
+          path: /meals
+          method: post
+  listMeals:
+    handler: src/functions/listMeals.handler
+    events:
+      - httpApi:
+          path: /meals
+          method: get
+  getMealById:
+    handler: src/functions/getMealById.handler
+    events:
+      - httpApi:
+          path: /meals/{mealId}
+          method: get
