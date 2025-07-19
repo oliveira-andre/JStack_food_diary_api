@@ -1,7 +1,9 @@
 import { z } from 'zod';
+import { eq } from 'drizzle-orm';
+import { hash } from 'bcryptjs';
+
 import { HttpRequest, HttpResponse } from '../types/Http';
 import { created, badRequest, conflict } from '../utils/http';
-import { eq } from 'drizzle-orm';
 import { db } from '../db/';
 import { usersTable } from '../db/schema';
 
@@ -35,16 +37,19 @@ export class SignUpController {
     });
 
     if (userAlreadyExists) {
-      conflict({ error: 'Email already in use' });
+      return conflict({ error: 'Email already in use' });
     }
 
     const { account, ...rest } = data;
+
+    const hashedPassword = await hash(account.password, 12);
 
     const [user] = await db
       .insert(usersTable)
       .values({
         ...account,
         ...rest,
+        password: hashedPassword,
         calories: 0,
         carbohydrates: 0,
         fats: 0,
