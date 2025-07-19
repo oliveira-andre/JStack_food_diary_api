@@ -9,6 +9,9 @@ provider:
   runtime: nodejs20.x
   architecture: arm64
 
+plugins:
+  - serverless-offline
+
 package:
   individually: true
 
@@ -19,13 +22,13 @@ build:
 
 functions:
   signin:
-    handler: src/signin.handler
+    handler: src/functions/signin.handler
     events:
       - httpApi:
           path: /signin
           method: post
   signup:
-    handler: src/signup.handler
+    handler: src/functions/signup.handler
     events:
       - httpApi:
           path: /signup
